@@ -1,20 +1,38 @@
-name: Deploy Web Page
+name: CI/CD for Static Website
 
 on:
   push:
     branches:
-      - main  # Runs on push to the main branch
+      - main  # Trigger this action on pushes to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting 'main' branch
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest  # Changed to Ubuntu
+  deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout the code
+        uses: actions/checkout@v2  # Check out the repository code
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages  # Deploys to the gh-pages branch
-          folder: .  # Deploys all files
+      - name: Set up GitHub Pages deployment
+        run: |
+          # Install GitHub Pages deployment utility
+          sudo apt-get install -y git
+          
+          # Configure Git user for committing changes
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          
+          # Create gh-pages branch (if it doesn't exist) and deploy
+          git checkout -b gh-pages  # Create the gh-pages branch
+          
+          # Move all files to the root (optional)
+          mv * .[^.]* ./  # Move dotfiles like .gitignore, .gitattributes
+          git add .
+          
+          git commit -m "Deploy static website to GitHub Pages"
+          
+          # Use GITHUB_TOKEN for authentication to push to gh-pages branch
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
