@@ -3,11 +3,11 @@ name: Deploy Web Page
 on:
   push:
     branches:
-      - main  # Runs on push to main branch
+      - main  # Runs on push to the main branch
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest  # Changed to Windows
+    runs-on: ubuntu-latest  # Changed to Ubuntu
 
     steps:
       - name: Checkout Repository
