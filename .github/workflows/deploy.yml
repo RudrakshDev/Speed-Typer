@@ -38,5 +38,5 @@ jobs:
           git add .
           git commit -m "Deploy static website to GitHub Pages"
           
-          # Force-push the changes to the gh-pages branch
-          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
+          # Use GITHUB_TOKEN for authentication to push to gh-pages branch
+          git push --force https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
