@@ -1,0 +1,20 @@
+name: Deploy Web Page
+
+on:
+  push:
+    branches:
+      - main  # Runs on push to main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # Changed to Windows
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # Deploys to the gh-pages branch
+          folder: .  # Deploys all files
