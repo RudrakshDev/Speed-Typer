@@ -28,10 +28,8 @@ jobs:
           # Create gh-pages branch (if it doesn't exist) and deploy
           git checkout -b gh-pages  # Create the gh-pages branch
           
-          # Move all files to the root (optional)
-          mv * .[^.]* ./  # Move dotfiles like .gitignore, .gitattributes
+          # Add all files to the branch and commit
           git add .
-          
           git commit -m "Deploy static website to GitHub Pages"
           
           # Use GITHUB_TOKEN for authentication to push to gh-pages branch
