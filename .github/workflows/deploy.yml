@@ -25,12 +25,18 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           
-          # Create gh-pages branch (if it doesn't exist) and deploy
-          git checkout -b gh-pages  # Create the gh-pages branch
+          # Check if the gh-pages branch exists; create it if not
+          git fetch origin gh-pages || git checkout --orphan gh-pages  # Create gh-pages if it doesn't exist
           
-          # Add all files to the branch and commit
+          # Remove any old files from the gh-pages branch
+          git rm -rf .
+          
+          # Checkout the files from the main branch into gh-pages
+          git checkout main -- .
+          
+          # Commit the files to gh-pages
           git add .
           git commit -m "Deploy static website to GitHub Pages"
           
-          # Use GITHUB_TOKEN for authentication to push to gh-pages branch
+          # Force-push the changes to the gh-pages branch
           git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
